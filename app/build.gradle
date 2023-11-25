@@ -1,0 +1,82 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
+}
+
+android {
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.ggkbt.currencyconverter"
+        minSdk 23
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation 'androidx.navigation:navigation-fragment:2.7.5'
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.5")
+    implementation ("com.google.android.material:material:1.10.0")
+    def retrofitVersion = "2.9.0"
+    // Бибилотека для упрощения работы с Rest Api
+    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    // Данные приходят в текстовом виде, нужно их из текста переводить в объекты.
+    // Gson позволяет производить конвертацию из текста в объекты и наоборот
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    // Retrofit можно расширить, чтобы не использовать Callback, а возвращать Single или Completable
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    // Зависимость для отображение запросов и ответов в Logcat https://github.com/square/okhttp/blob/master/okhttp-logging-interceptor/README.md
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.3"
+    // RxJava2 + экстешены для Kotlin. Также фиксит ряд проблем с дженериками
+    implementation "io.reactivex.rxjava2:rxkotlin:2.4.0"
+    // Добавляет AndroidSchedulers.mainThread(), чтобы переключаться на главный поток
+    implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.10.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation "androidx.fragment:fragment-ktx:1.6.2"
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+    // For control over item selection of both touch and mouse driven selection
+    implementation("androidx.recyclerview:recyclerview-selection:1.1.0")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation 'com.github.kirich1409:viewbindingpropertydelegate:1.5.6'
+    implementation("androidx.room:room-runtime:2.6.0")
+    annotationProcessor("androidx.room:room-compiler:2.6.0")
+    //implementation ('androidx.navigation:navigation-safe-args-gradle-plugin:2.5.3')
+
+    // To use Kotlin annotation processing tool (kapt)
+    kapt("androidx.room:room-compiler:2.6.0")
+    // To use Kotlin Symbol Processing (KSP)
+
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:2.6.0")
+    implementation ("androidx.room:room-rxjava2:2.6.0")
+
+}

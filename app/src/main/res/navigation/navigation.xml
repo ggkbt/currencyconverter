@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/calculatorFragment">
+
+    <fragment
+        android:id="@+id/currencyListFragment"
+        android:name="com.ggkbt.currencyconverter.CurrencyListFragment"
+        android:label="@string/choose_currency"
+        tools:layout="@layout/fragment_currency_list">
+        <action
+            android:id="@+id/action_currencyListFragment_to_calculatorFragment"
+            app:destination="@id/calculatorFragment"
+            app:popUpTo="@id/navigation"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/calculatorFragment"
+        android:name="com.ggkbt.currencyconverter.CalculatorFragment"
+        android:label="@string/calculator"
+        tools:layout="@layout/fragment_calculator">
+        <action
+            android:id="@+id/action_calculatorFragment_to_currencyListFragment"
+            app:destination="@id/currencyListFragment" />
+        <action
+            android:id="@+id/action_calculatorFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.ggkbt.currencyconverter.SettingsFragment"
+        android:label="@string/settings"
+        tools:layout="@layout/fragment_settings">
+    </fragment>
+
+</navigation>

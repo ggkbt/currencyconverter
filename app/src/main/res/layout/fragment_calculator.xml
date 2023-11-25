@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/calcLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CalculatorFragment">
+
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="70dp"
+        android:minHeight="70dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/errorLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="gone">
+
+
+                <ImageView
+                    android:id="@+id/errorImageView"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/error_icon"
+                    app:layout_constraintBottom_toTopOf="@id/errorTextView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed" />
+
+                <TextView
+                    android:id="@+id/errorTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="24dp"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toTopOf="@+id/retryButton"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/errorImageView"
+                    tools:text="Ошибка" />
+
+                <Button
+                    android:id="@+id/retryButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/retry"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/errorTextView" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="42dp"
+                    android:layout_marginEnd="32dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/appName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/app_name"
+                        android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+                        android:textSize="32sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/iwSettings"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/settings_icon_black" />
+
+                </LinearLayout>
+
+
+                <com.google.android.material.card.MaterialCardView
+
+                    android:id="@+id/calculatorLayout"
+                    style="@style/Widget.Material3.CardView.Elevated"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="32dp"
+                    android:layout_marginTop="45dp"
+                    android:visibility="gone"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="3dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="visible">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginBottom="24dp"
+                        android:orientation="vertical"
+                        tools:visibility="visible">
+
+
+                        <EditText
+                            android:id="@+id/valueInBaseCurrencyEditText"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginEnd="24dp"
+                            android:ems="10"
+                            android:hint="@string/val_hint"
+                            android:inputType="numberDecimal"
+                            android:minHeight="48dp"
+                            android:textAlignment="center"
+                            android:textColorHint="#757575"
+                            app:layout_constraintBottom_toBottomOf="@+id/valueInTargetCurrencyEditText"
+                            app:layout_constraintEnd_toStartOf="@+id/valueInTargetCurrencyEditText"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <EditText
+                            android:id="@+id/valueInTargetCurrencyEditText"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="24dp"
+                            android:ems="10"
+                            android:inputType="numberDecimal"
+                            android:minHeight="48dp"
+                            android:textAlignment="center"
+                            android:textColorHint="#757575"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/valueInBaseCurrencyEditText"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:hint="@string/val_hint" />
+
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/baseCurrencySelectorContainer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="?attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:minHeight="48dp"
+                            android:padding="8dp"
+                            app:layout_constraintEnd_toEndOf="@+id/valueInBaseCurrencyEditText"
+                            app:layout_constraintStart_toStartOf="@+id/valueInBaseCurrencyEditText"
+                            app:layout_constraintTop_toBottomOf="@+id/valueInBaseCurrencyEditText">
+
+                            <ImageView
+                                android:id="@+id/baseCurrencyArrowDown"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/arrow_dropdown_icon"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageView
+                                android:id="@+id/baseCurrencyFlag"
+                                android:layout_width="@dimen/calc_flag_width"
+                                android:layout_height="@dimen/calc_flag_height"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/baseCurrencyTextView"
+                                app:layout_constraintStart_toEndOf="@+id/baseCurrencyArrowDown"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:srcCompat="@drawable/flag_unknown" />
+
+                            <TextView
+                                android:id="@+id/baseCurrencyTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="18sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:text="VAL" />
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/targetCurrencySelectorContainer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="?attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:minHeight="48dp"
+                            android:padding="8dp"
+                            app:layout_constraintEnd_toEndOf="@+id/valueInTargetCurrencyEditText"
+                            app:layout_constraintStart_toStartOf="@+id/valueInTargetCurrencyEditText"
+                            app:layout_constraintTop_toBottomOf="@+id/valueInTargetCurrencyEditText">
+
+                            <ImageView
+                                android:id="@+id/targetCurrencyArrowDown"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/arrow_dropdown_icon"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/targetCurrencyTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="18sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:text="VAL 2" />
+
+                            <ImageView
+                                android:id="@+id/targetCurrencyFlag"
+                                android:layout_width="@dimen/calc_flag_width"
+                                android:layout_height="@dimen/calc_flag_height"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/targetCurrencyTextView"
+                                app:layout_constraintStart_toEndOf="@+id/targetCurrencyArrowDown"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:srcCompat="@drawable/flag_unknown" />
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+
+        </FrameLayout>
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
