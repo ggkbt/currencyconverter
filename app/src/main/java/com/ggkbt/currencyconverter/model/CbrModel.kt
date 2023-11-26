@@ -1,4 +1,4 @@
-package com.ggkbt.currencyconverter
+package com.ggkbt.currencyconverter.model
 
 import android.os.Parcelable
 import androidx.room.*

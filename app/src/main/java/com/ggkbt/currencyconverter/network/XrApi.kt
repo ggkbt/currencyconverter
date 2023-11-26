@@ -17,7 +17,7 @@ interface XrApi {
     ): Single<XrModel>
 
     companion object {
-        var requestClient: XrApi? = null
+        private var requestClient: XrApi? = null
         fun getInstance(): XrApi {
             if (requestClient == null) {
                 val retrofit = Retrofit.Builder()

@@ -1,23 +1,25 @@
-package com.ggkbt.currencyconverter
+package com.ggkbt.currencyconverter.view
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.ggkbt.currencyconverter.databinding.FragmentSettingsBinding
 import com.ggkbt.currencyconverter.preferences.LocaleManager
+import com.ggkbt.currencyconverter.viewmodel.CurrencyViewModel
 
 class SettingsFragment : Fragment() {
 
     private val binding: FragmentSettingsBinding by viewBinding(CreateMethod.INFLATE)
-    private val currencyViewModel: CurrencyViewModel by viewModels()
+    private val currencyViewModel: CurrencyViewModel by activityViewModels()
 
 
     override fun onCreateView(
@@ -31,17 +33,18 @@ class SettingsFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("TAG123", "Settings viewModel: ${currencyViewModel.hashCode()}")
         val currentLanguage = context?.let { LocaleManager.getCurrentLanguage(it) } ?: "en"
         binding.apply {
             settingsToolbar.setNavigationOnClickListener {
-                it.findNavController().navigateUp();
+                it.findNavController().navigateUp()
             }
             switchTheme.isEnabled = currencyViewModel.prefs.systemTheme
             radioCbrfApi.isChecked = currencyViewModel.prefs.isCbr
             radioExchangeRatesApi.isChecked = !currencyViewModel.prefs.isCbr
             radioEnglish.isChecked = currentLanguage == "en"
             radioRussian.isChecked = currentLanguage == "ru"
-            switchTheme.setOnCheckedChangeListener { buttonView, isChecked ->
+            switchTheme.setOnCheckedChangeListener { _, isChecked ->
                 currencyViewModel.prefs.systemTheme = isChecked
             }
             radioRussian.setOnClickListener {
@@ -54,11 +57,11 @@ class SettingsFragment : Fragment() {
             }
             radioCbrfApi.setOnClickListener {
                 radioExchangeRatesApi.isChecked = false
-                currencyViewModel.prefs.isCbr = true
+                currencyViewModel.updatePrefs(isCbr = true)
             }
             radioExchangeRatesApi.setOnClickListener {
                 radioCbrfApi.isChecked = false
-                currencyViewModel.prefs.isCbr = false
+                currencyViewModel.updatePrefs(isCbr = false)
             }
         }
     }

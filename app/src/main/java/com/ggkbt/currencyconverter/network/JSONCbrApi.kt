@@ -1,5 +1,6 @@
-package com.ggkbt.currencyconverter
+package com.ggkbt.currencyconverter.network
 
+import com.ggkbt.currencyconverter.model.CbrModel
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
@@ -12,7 +13,7 @@ interface JSONCbrApi {
     fun getAllData(): Single<CbrModel>
 
     companion object {
-        var requestClient: JSONCbrApi? = null
+        private var requestClient: JSONCbrApi? = null
         fun getInstance(): JSONCbrApi {
             if (requestClient == null) {
                 val retrofit = Retrofit.Builder()

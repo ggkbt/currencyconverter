@@ -6,11 +6,13 @@ import com.ggkbt.currencyconverter.enums.Currency
 import com.google.gson.Gson
 
 class Prefs(context: Context) {
-    private val PREFERENCES_KEY = "preferences"
-    private val APP_PREF_API_OPT_KEY = "api_option"
-    private val BASE_CURRENCY_KEY = "base_currency"
-    private val TARGET_CURRENCY_KEY = "target_currency"
-    private val THEME_KEY = "theme"
+    companion object {
+        private const val PREFERENCES_KEY = "preferences"
+        private const val APP_PREF_API_OPT_KEY = "api_option"
+        private const val BASE_CURRENCY_KEY = "base_currency"
+        private const val TARGET_CURRENCY_KEY = "target_currency"
+        private const val THEME_KEY = "theme"
+    }
 
     private val preferences: SharedPreferences =
         context.getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE)

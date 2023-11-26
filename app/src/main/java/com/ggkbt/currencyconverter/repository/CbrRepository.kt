@@ -4,9 +4,9 @@ import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import com.ggkbt.currencyconverter.CbrModel
+import com.ggkbt.currencyconverter.model.CbrModel
 import com.ggkbt.currencyconverter.app.CurrencyConverterApp
-import com.ggkbt.currencyconverter.JSONCbrApi
+import com.ggkbt.currencyconverter.network.JSONCbrApi
 import com.ggkbt.currencyconverter.room.CurrencyDatabase
 import com.ggkbt.currencyconverter.room.dao.CbrModelDao
 

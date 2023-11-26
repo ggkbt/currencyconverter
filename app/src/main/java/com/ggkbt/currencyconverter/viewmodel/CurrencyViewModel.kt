@@ -1,15 +1,19 @@
-package com.ggkbt.currencyconverter
+package com.ggkbt.currencyconverter.viewmodel
 
 import android.annotation.SuppressLint
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.ggkbt.currencyconverter.model.CbrCurrency
+import com.ggkbt.currencyconverter.model.CbrModel
 import com.ggkbt.currencyconverter.app.CurrencyConverterApp
 import com.ggkbt.currencyconverter.di.ServiceLocator
 import com.ggkbt.currencyconverter.enums.Currency
+import com.ggkbt.currencyconverter.model.FavoritePair
 import com.ggkbt.currencyconverter.model.XrModel
 import io.reactivex.rxkotlin.subscribeBy
 import java.math.BigDecimal
@@ -28,8 +32,21 @@ class CurrencyViewModel : ViewModel() {
             loadDbApiXrData()
         }
     }
+    private val _favoritePairs = MutableLiveData<List<FavoritePair>>()
+    private val favoritePairs: LiveData<List<FavoritePair>>
+        get() = _favoritePairs
 
     val prefs = CurrencyConverterApp.instance.prefs
+    val isCbrLiveData = MutableLiveData(prefs.isCbr)
+
+    private val isUpdated = MutableLiveData<Boolean>()
+
+    init {
+        loadPairs()
+    }
+
+    var oldSourceValue: String? = null
+    var oldTargetValue: String? = null
 
     private val error = MutableLiveData<Pair<Throwable?, Boolean?>?>()
 
@@ -49,6 +66,7 @@ class CurrencyViewModel : ViewModel() {
             return prefs.targetCurrency
         }
         set(value) {
+            if (prefs.isCbr) loadDbApiCbrData() else loadDbApiXrData()
             field = value
             prefs.targetCurrency = value
         }
@@ -61,12 +79,50 @@ class CurrencyViewModel : ViewModel() {
         return xrCurrenciesData
     }
 
+    fun getFilteredFavoritePairs(): LiveData<List<FavoritePair>> {
+        val result = MediatorLiveData<List<FavoritePair>>()
+
+        result.addSource(favoritePairs) { pairs ->
+            Log.d("TAG123", "getFilteredFavoritePairs favoritePairs")
+            Log.d("TAG_PAIRS", "viewModel getFilteredFavoritePairs pairs: $pairs")
+            if (prefs.isCbr) {
+                result.value = combineLatestCbrData(cbrCurrenciesData.value, pairs)
+            } else {
+                result.value = pairs
+            }
+        }
+
+        result.addSource(isUpdated) {
+            Log.d("TAG123", "getFilteredFavoritePairs isUpdated")
+            if (prefs.isCbr) {
+                result.value = combineLatestCbrData(cbrCurrenciesData.value, favoritePairs.value)
+            } else {
+                result.value = favoritePairs.value
+            }
+        }
+
+        if (prefs.isCbr) {
+            result.addSource(cbrCurrenciesData) { cbrData ->
+                Log.d("TAG123", "getFilteredFavoritePairs cbrCurrenciesData")
+                result.value = combineLatestCbrData(cbrData, favoritePairs.value)
+            }
+        }
+
+        return result
+    }
+
     fun getError(): LiveData<Pair<Throwable?, Boolean?>?> {
         return error
     }
 
     fun refreshData() {
         if (prefs.isCbr) loadCbrData() else loadXrData()
+    }
+
+    fun updatePrefs(isCbr: Boolean) {
+        isCbrLiveData.value = isCbr
+        this.prefs.isCbr = isCbr
+        if (isCbr) loadDbApiCbrData() else loadDbApiXrData()
     }
 
     @SuppressLint("CheckResult")
@@ -137,6 +193,43 @@ class CurrencyViewModel : ViewModel() {
     }
 
     @SuppressLint("CheckResult")
+    private fun loadPairs() {
+        ServiceLocator.getInstance().pairsRepository.loadFromDb()
+            .subscribe ({ pairs ->
+                _favoritePairs.postValue(pairs)
+                Log.d("VIEW_MODEL_TAG", "Получены данные из базы данных [Cbr]: $pairs")
+            }, {
+                Log.d("VIEW_MODEL_TAG", "Ошибка чтения из базы данных [Pairs]: $it")
+            })
+    }
+
+    @SuppressLint("CheckResult")
+    fun writePairToDb(pair: FavoritePair) {
+        ServiceLocator.getInstance().pairsRepository.writeToDb(pair)
+            .subscribe({
+                Log.d("VIEW_MODEL_TAG", "Данные в базу данных успешно записаны [Pairs]")
+                val updatedList = _favoritePairs.value?.toMutableList() ?: mutableListOf()
+                updatedList.add(pair)
+                _favoritePairs.postValue(updatedList)
+            }, {
+                Log.d("VIEW_MODEL_TAG", "Ошибка записи в базу данных [Pairs]: $it")
+            })
+    }
+
+    @SuppressLint("CheckResult")
+    fun deletePairFromDb(pair: FavoritePair) {
+        ServiceLocator.getInstance().pairsRepository.deleteFromDb(pair)
+            .subscribe({
+                Log.d("VIEW_MODEL_TAG", "Данные из БД удалены [Pairs]")
+                val updatedList = _favoritePairs.value?.toMutableList() ?: mutableListOf()
+                updatedList.remove(pair)
+                _favoritePairs.postValue(updatedList)
+            }, {
+                Log.d("VIEW_MODEL_TAG", "Ошибка удаления из БД [Pairs]: $it")
+            })
+    }
+
+    @SuppressLint("CheckResult")
     private fun writeToCbrDb(cbrModel: CbrModel) {
         ServiceLocator.getInstance().cbrRepository.writeToDb(cbrModel.copy(id = 0))
             .subscribe({
@@ -155,6 +248,28 @@ class CurrencyViewModel : ViewModel() {
             }, {
                 Log.d("VIEW_MODEL_TAG", "Ошибка записи в базу данных [Xr]: $it")
             })
+    }
+
+    private fun combineLatestCbrData(currenciesList: List<CbrCurrency>?, pairs: List<FavoritePair>?): List<FavoritePair> {
+        if (currenciesList.isNullOrEmpty() || pairs.isNullOrEmpty()) return emptyList()
+        return pairs.filter { pair ->
+            currenciesList.any { currency ->
+                pair.from.contains(currency.charCode) && pair.to == Currency.RUB.name
+            }
+        }
+    }
+
+    fun nullOldValues() {
+        oldSourceValue = null
+        oldTargetValue = null
+        Log.d("TAG123", "nullOldValues")
+    }
+
+    fun updatePair(newBase: Currency = baseCurrency, newTarget: Currency = targetCurrency) {
+        baseCurrency = newBase
+        targetCurrency = newTarget
+        if (prefs.isCbr) loadDbApiCbrData() else loadDbApiXrData()
+        isUpdated.value = true
     }
 
     private fun isDataStale(timestamp: String): Boolean {

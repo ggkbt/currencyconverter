@@ -198,5 +198,9 @@
     <string name="ssp_name">Южносуданский фунт</string>
     <string name="stn_name">Добра Сан-Томе и Принсипи</string>
     <string name="tvd_name">Доллар Тувалу</string>
+    <string name="add_to_favs">Добавить в избранные</string>
+    <string name="favorite_currencies">Favorite currecy pairs</string>
+    <string name="from_to">%1$s в %2$s</string>
+    <string name="remove_from_favs">Удалить из избранных</string>
 
 </resources>

@@ -14,6 +14,8 @@
     <string name="rub" translatable="false">RUB</string>
     <string name="retry">Retry</string>
     <string name="theme_system">Theme settings</string>
+    <string name="add_to_favs">Add to favorites</string>
+    <string name="from_to">%1$s to %2$s</string>
     <string name="theme_as_in_system">System\'s theme</string>
     <string name="api_source">API source</string>
     <string name="exchange_rates_api">Exchange Rates API</string>
@@ -199,5 +201,7 @@
     <string name="ssp_name">South Sudanese Pound</string>
     <string name="stn_name">São Tomé and Príncipe Dobra</string>
     <string name="tvd_name">Tuvaluan Dollar</string>
+    <string name="favorite_currencies">Избранные валютные пары</string>
+    <string name="remove_from_favs">Remove from favorites</string>
 
 </resources>
