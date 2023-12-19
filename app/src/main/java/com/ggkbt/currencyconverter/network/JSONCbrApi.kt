@@ -1,6 +1,6 @@
 package com.ggkbt.currencyconverter.network
 
-import com.ggkbt.currencyconverter.model.CbrModel
+import com.ggkbt.currencyconverter.model.cbr.CbrModel
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit

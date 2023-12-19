@@ -1,7 +1,7 @@
 package com.ggkbt.currencyconverter.room
 
 import androidx.room.TypeConverter
-import com.ggkbt.currencyconverter.model.CbrCurrency
+import com.ggkbt.currencyconverter.model.cbr.CbrCurrency
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.math.BigDecimal

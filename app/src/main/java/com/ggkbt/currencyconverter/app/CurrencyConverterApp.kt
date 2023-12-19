@@ -29,6 +29,5 @@ class CurrencyConverterApp : Application() {
             .build()
         prefs = Prefs(context = instance.applicationContext)
         ServiceLocator.getInstance()
-
     }
 }

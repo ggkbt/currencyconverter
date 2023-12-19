@@ -3,7 +3,7 @@ package com.ggkbt.currencyconverter.room.dao
 import androidx.room.*
 import io.reactivex.Completable
 import io.reactivex.Single
-import com.ggkbt.currencyconverter.model.CbrModel
+import com.ggkbt.currencyconverter.model.cbr.CbrModel
 
 @Dao
 interface CbrModelDao {

@@ -8,13 +8,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.ggkbt.currencyconverter.model.CbrCurrency
-import com.ggkbt.currencyconverter.model.CbrModel
 import com.ggkbt.currencyconverter.app.CurrencyConverterApp
 import com.ggkbt.currencyconverter.di.ServiceLocator
 import com.ggkbt.currencyconverter.enums.Currency
 import com.ggkbt.currencyconverter.model.FavoritePair
 import com.ggkbt.currencyconverter.model.XrModel
+import com.ggkbt.currencyconverter.model.cbr.CbrCurrency
+import com.ggkbt.currencyconverter.model.cbr.CbrModel
 import io.reactivex.rxkotlin.subscribeBy
 import java.math.BigDecimal
 import java.time.OffsetDateTime

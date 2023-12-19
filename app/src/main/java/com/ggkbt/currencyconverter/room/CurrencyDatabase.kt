@@ -3,7 +3,7 @@ package com.ggkbt.currencyconverter.room
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.ggkbt.currencyconverter.model.CbrModel
+import com.ggkbt.currencyconverter.model.cbr.CbrModel
 import com.ggkbt.currencyconverter.model.FavoritePair
 import com.ggkbt.currencyconverter.model.XrModel
 import com.ggkbt.currencyconverter.room.dao.CbrModelDao
